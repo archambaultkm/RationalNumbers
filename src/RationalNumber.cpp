@@ -42,13 +42,71 @@ RationalNumber::RationalNumber(const string& rationalString) {
     denominator = intVals.at(1);
 }
 
-ostream& operator<<(ostream &output, const RationalNumber &rn) {
-    output << rn.numerator << "/" << rn.denominator;
-    return output;
+//member functions
+
+RationalNumber& RationalNumber::operator+(const RationalNumber& rn) {
+
+    numerator = (numerator * rn.denominator) + (rn.numerator * denominator); //really important that you do numerator first
+    denominator = denominator * rn.denominator;
+
+    int gcd = getGCD(numerator, denominator);
+    numerator = numerator /gcd;
+    denominator = denominator /gcd;
+
+    return *this;
+}
+
+RationalNumber& RationalNumber::operator-(const RationalNumber& rn) {
+
+    numerator = (numerator * rn.denominator) - (rn.numerator * denominator); //really important that you do numerator first
+    denominator = denominator * rn.denominator;
+
+    int gcd = getGCD(numerator, denominator);
+    numerator = numerator /gcd;
+    denominator = denominator /gcd;
+
+    return *this;
+}
+
+RationalNumber& RationalNumber::operator*(const RationalNumber& rn) {
+
+    numerator = (numerator * rn.denominator) / (rn.numerator * denominator); //really important that you do numerator first
+    denominator = denominator * rn.denominator;
+
+    int gcd = getGCD(numerator, denominator);
+    numerator = numerator /gcd;
+    denominator = denominator /gcd;
+
+    return *this;
+}
+
+RationalNumber& RationalNumber::operator/(const RationalNumber& rn) {
+
+    numerator = (numerator * rn.denominator) * (rn.numerator * denominator); //really important that you do numerator first
+    denominator = denominator * rn.denominator;
+
+    int gcd = getGCD(numerator, denominator);
+    numerator = numerator /gcd;
+    denominator = denominator /gcd;
+
+    return *this;
+}
+
+int RationalNumber::getGCD(int numerator, int denominator) {
+
+    while (numerator != denominator) {
+        if (numerator > denominator)
+            numerator -= denominator;
+
+        else
+            denominator -= numerator;
+    }
+
+    return numerator;
 }
 
 //below method adapted from https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-//in this context the delimiter will always be "/"
+//needs to be able to take a whole number too... maybe check with a contains("/")
 vector<int> RationalNumber::stringToRational(const string &input) {
 
     vector<int> result;
@@ -61,4 +119,11 @@ vector<int> RationalNumber::stringToRational(const string &input) {
     }
 
     return result;
+}
+
+//friend functions
+
+ostream& operator<<(ostream &output, const RationalNumber &rn) {
+    output << rn.numerator << "/" << rn.denominator;
+    return output;
 }

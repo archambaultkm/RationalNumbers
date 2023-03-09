@@ -5,17 +5,14 @@ int main() {
 
     //if a string is passed, validate ((-)num/(-)num))
 
-    RationalNumber rn1(-7,-4);
+    //to test that constructors work:
+    RationalNumber rn1(2,3);
     cout << rn1 << endl;
 
-    RationalNumber rn2("8/-10");
-    cout << rn2 << endl;
+    RationalNumber rn5(1,3);
 
-    RationalNumber rn3(6);
-    cout << rn3 << endl;
-
-    RationalNumber rn4;
-    cout << rn4 << endl;
+    RationalNumber rn6 = rn1 / rn5;
+    cout << rn6 << endl;
 
     return 0;
 }

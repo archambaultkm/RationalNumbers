@@ -18,7 +18,6 @@ private:
     int denominator;
 
 public:
-
     //constructors
     RationalNumber();
     explicit RationalNumber(int numerator);
@@ -26,7 +25,12 @@ public:
     explicit RationalNumber(const string& rationalString);
 
     //member functions
+    RationalNumber& operator+(const RationalNumber& rn);
+    RationalNumber& operator-(const RationalNumber& rn);
+    RationalNumber& operator*(const RationalNumber& rn);
+    RationalNumber& operator/(const RationalNumber& rn);
     vector<int> stringToRational(const string &input);
+    int getGCD(int numerator, int denominator);
 
     //friend functions
     friend ostream& operator<<(ostream &output, const RationalNumber &rn);
