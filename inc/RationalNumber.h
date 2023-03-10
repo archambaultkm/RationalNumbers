@@ -23,12 +23,20 @@ public:
     explicit RationalNumber(int numerator);
     RationalNumber(int numerator, int denominator);
     explicit RationalNumber(const string& rationalString);
+    ~RationalNumber(){}
 
     //member functions
     RationalNumber& operator+(const RationalNumber& rn);
     RationalNumber& operator-(const RationalNumber& rn);
     RationalNumber& operator*(const RationalNumber& rn);
     RationalNumber& operator/(const RationalNumber& rn);
+    RationalNumber& operator=(const RationalNumber& rn);
+    RationalNumber& operator+=(const RationalNumber& rn);
+
+    bool operator<(const RationalNumber& rn);
+    bool operator>(const RationalNumber& rn);
+    bool operator==(const RationalNumber& rn);
+
     vector<int> stringToRational(const string &input);
     int getGCD(int numerator, int denominator);
 

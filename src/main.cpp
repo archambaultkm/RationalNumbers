@@ -9,9 +9,19 @@ int main() {
     RationalNumber rn1(2,3);
     cout << rn1 << endl;
 
-    RationalNumber rn5(1,3);
+    RationalNumber rn2(1,6);
+    cout << rn2 << endl;
 
-    RationalNumber rn6 = rn1 / rn5;
+    RationalNumber rn3 = rn1 + rn2;
+    cout << rn3 << endl;
+
+    RationalNumber rn4 = rn1;
+    cout << rn4 << endl;
+
+    RationalNumber rn5 = rn2;
+    cout << rn5 << endl;
+
+    RationalNumber rn6("45");
     cout << rn6 << endl;
 
     return 0;

@@ -10,7 +10,7 @@ RationalNumber::RationalNumber() {
     cout <<"default constructor fired" << endl;
 
     numerator = 0;
-    denominator = 0;
+    denominator = 1;
 }
 
 //whole number/ one argument constructor
@@ -36,22 +36,30 @@ RationalNumber::RationalNumber(const string& rationalString) {
 
     cout << "string constructor fired" << endl;
 
-    vector<int> intVals = stringToRational(rationalString);
+    if (rationalString.find('/') != string::npos) {
 
-    numerator = intVals.at(0);
-    denominator = intVals.at(1);
+        vector<int> intVals = stringToRational(rationalString);
+
+        numerator = intVals.at(0);
+        denominator = intVals.at(1);
+
+    } else {
+
+        numerator = stoi(rationalString);
+        denominator = 1;
+    }
 }
 
 //member functions
 
 RationalNumber& RationalNumber::operator+(const RationalNumber& rn) {
 
-    numerator = (numerator * rn.denominator) + (rn.numerator * denominator); //really important that you do numerator first
     denominator = denominator * rn.denominator;
+    numerator = (numerator * rn.denominator) + (rn.numerator * denominator); //really important that you do numerator first
 
     int gcd = getGCD(numerator, denominator);
-    numerator = numerator /gcd;
-    denominator = denominator /gcd;
+    numerator /= gcd;
+    denominator /= gcd;
 
     return *this;
 }
@@ -62,8 +70,8 @@ RationalNumber& RationalNumber::operator-(const RationalNumber& rn) {
     denominator = denominator * rn.denominator;
 
     int gcd = getGCD(numerator, denominator);
-    numerator = numerator /gcd;
-    denominator = denominator /gcd;
+    numerator /= gcd;
+    denominator /= gcd;
 
     return *this;
 }
@@ -74,8 +82,8 @@ RationalNumber& RationalNumber::operator*(const RationalNumber& rn) {
     denominator = denominator * rn.denominator;
 
     int gcd = getGCD(numerator, denominator);
-    numerator = numerator /gcd;
-    denominator = denominator /gcd;
+    numerator /= gcd;
+    denominator /= gcd;
 
     return *this;
 }
@@ -86,23 +94,25 @@ RationalNumber& RationalNumber::operator/(const RationalNumber& rn) {
     denominator = denominator * rn.denominator;
 
     int gcd = getGCD(numerator, denominator);
-    numerator = numerator /gcd;
-    denominator = denominator /gcd;
+    numerator /= gcd;
+    denominator /= gcd;
 
     return *this;
 }
 
+RationalNumber& RationalNumber::operator=(const RationalNumber& rn) {
+
+    cout << "custom assignment operator fired" << endl;
+    numerator = rn.numerator;
+    denominator = rn.denominator;
+}
+
 int RationalNumber::getGCD(int numerator, int denominator) {
 
-    while (numerator != denominator) {
-        if (numerator > denominator)
-            numerator -= denominator;
+    if (denominator == 0)
+        return numerator;
 
-        else
-            denominator -= numerator;
-    }
-
-    return numerator;
+    return getGCD(denominator, numerator % denominator);
 }
 
 //below method adapted from https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
@@ -124,6 +134,16 @@ vector<int> RationalNumber::stringToRational(const string &input) {
 //friend functions
 
 ostream& operator<<(ostream &output, const RationalNumber &rn) {
-    output << rn.numerator << "/" << rn.denominator;
+
+    if (rn.numerator == rn.denominator) {
+        output << 1;
+    } else if (rn.numerator == 0) {
+        output << 0;
+    } else if (rn.denominator == 1) {
+        output << rn.numerator;
+    } else {
+        output << rn.numerator << "/" << rn.denominator;
+    }
+
     return output;
 }
