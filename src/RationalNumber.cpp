@@ -7,7 +7,7 @@
 //default constructor
 RationalNumber::RationalNumber() {
 
-    cout <<"default constructor fired" << endl;
+    cout <<"Default constructor fired" << endl;
 
     numerator = 0;
     denominator = 1;
@@ -34,7 +34,7 @@ RationalNumber::RationalNumber(int numerator, int denominator) {
 //constructor for number passed as string
 RationalNumber::RationalNumber(const string& rationalString) {
 
-    cout << "string constructor fired" << endl;
+    cout << "String constructor fired" << endl;
 
     if (rationalString.find('/') != string::npos) {
 
@@ -50,73 +50,15 @@ RationalNumber::RationalNumber(const string& rationalString) {
     }
 }
 
+//default destructor
+RationalNumber::~RationalNumber() {
+
+    cout << "Destructor fired" << endl;
+}
+
 //member functions
 
-RationalNumber& RationalNumber::operator+(const RationalNumber& rn) {
-
-    denominator = denominator * rn.denominator;
-    numerator = (numerator * rn.denominator) + (rn.numerator * denominator); //really important that you do numerator first
-
-    int gcd = getGCD(numerator, denominator);
-    numerator /= gcd;
-    denominator /= gcd;
-
-    return *this;
-}
-
-RationalNumber& RationalNumber::operator-(const RationalNumber& rn) {
-
-    numerator = (numerator * rn.denominator) - (rn.numerator * denominator); //really important that you do numerator first
-    denominator = denominator * rn.denominator;
-
-    int gcd = getGCD(numerator, denominator);
-    numerator /= gcd;
-    denominator /= gcd;
-
-    return *this;
-}
-
-RationalNumber& RationalNumber::operator*(const RationalNumber& rn) {
-
-    numerator = (numerator * rn.denominator) / (rn.numerator * denominator); //really important that you do numerator first
-    denominator = denominator * rn.denominator;
-
-    int gcd = getGCD(numerator, denominator);
-    numerator /= gcd;
-    denominator /= gcd;
-
-    return *this;
-}
-
-RationalNumber& RationalNumber::operator/(const RationalNumber& rn) {
-
-    numerator = (numerator * rn.denominator) * (rn.numerator * denominator); //really important that you do numerator first
-    denominator = denominator * rn.denominator;
-
-    int gcd = getGCD(numerator, denominator);
-    numerator /= gcd;
-    denominator /= gcd;
-
-    return *this;
-}
-
-RationalNumber& RationalNumber::operator=(const RationalNumber& rn) {
-
-    cout << "custom assignment operator fired" << endl;
-    numerator = rn.numerator;
-    denominator = rn.denominator;
-}
-
-int RationalNumber::getGCD(int numerator, int denominator) {
-
-    if (denominator == 0)
-        return numerator;
-
-    return getGCD(denominator, numerator % denominator);
-}
-
 //below method adapted from https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-//needs to be able to take a whole number too... maybe check with a contains("/")
 vector<int> RationalNumber::stringToRational(const string &input) {
 
     vector<int> result;
@@ -129,6 +71,144 @@ vector<int> RationalNumber::stringToRational(const string &input) {
     }
 
     return result;
+}
+
+int RationalNumber::getGCD(int numerator, int denominator) {
+
+    if (denominator == 0)
+        return numerator;
+
+    //recursive function will keep going until the numerator is the gcd
+    return getGCD(denominator, numerator % denominator);
+}
+
+void RationalNumber::reduce(RationalNumber& rn) {
+
+    int gcd = getGCD(rn.numerator, rn.denominator);
+    rn.numerator /= gcd;
+    rn.denominator /= gcd;
+
+    //if the fraction is negative, only represent it in numerator
+    //(or cancel it out if both numerator and denominator are negative)
+    if (rn.denominator < 0) {
+
+        rn.numerator *= -1;
+        rn.denominator *= -1;
+    }
+}
+
+//make and return a new RationalNumber in the operator overloads so you can do arithmetic on the same fractions multiple times
+
+RationalNumber RationalNumber::operator+(const RationalNumber& rn) {
+
+    RationalNumber result;
+
+    result.numerator = (this->numerator * rn.denominator) + (rn.numerator * this->denominator);
+    result.denominator = this->denominator * rn.denominator;
+
+    reduce(result);
+
+    return result;
+}
+
+RationalNumber& RationalNumber::operator+=(const RationalNumber& rn) {
+
+    this->numerator = (this->numerator * rn.denominator) + (rn.numerator * this->denominator);
+    this->denominator *= rn.denominator;
+
+    reduce(*this);
+
+    return *this;
+}
+
+RationalNumber RationalNumber::operator-(const RationalNumber& rn) {
+
+    RationalNumber result;
+
+    result.numerator = (this->numerator * rn.denominator) - (rn.numerator * this->denominator);
+    result.denominator = this->denominator * rn.denominator;
+
+    reduce(result);
+
+    return result;
+}
+
+RationalNumber& RationalNumber::operator-=(const RationalNumber& rn) {
+
+    this->numerator = (this->numerator * rn.denominator) - (rn.numerator * this->denominator);
+    this->denominator *= rn.denominator;
+
+    reduce(*this);
+
+    return *this;
+}
+
+RationalNumber RationalNumber::operator*(const RationalNumber& rn) {
+
+    RationalNumber result;
+
+    result.numerator = this->numerator * rn.numerator;
+    result.denominator = this->denominator * rn.denominator;
+
+    reduce(result);
+
+    return result;
+}
+
+RationalNumber& RationalNumber::operator*=(const RationalNumber& rn) {
+
+    this->numerator *= rn.numerator;
+    this->denominator *= rn.denominator;
+
+    reduce(*this);
+
+    return *this;
+}
+
+RationalNumber RationalNumber::operator/(const RationalNumber& rn) {
+
+    RationalNumber result;
+
+    result.numerator = this->numerator * rn.denominator;
+    result.denominator = this->denominator * rn.numerator;
+
+    reduce(result);
+
+    return result;
+}
+
+RationalNumber& RationalNumber::operator/=(const RationalNumber& rn) {
+
+    this->numerator *= rn.denominator;
+    this->denominator *= rn.numerator;
+
+    reduce(*this);
+
+    return *this;
+}
+
+RationalNumber& RationalNumber::operator=(const RationalNumber& rn) {
+
+    cout << "custom assignment operator fired" << endl;
+    numerator = rn.numerator;
+    denominator = rn.denominator;
+
+    return *this;
+}
+
+bool RationalNumber::operator<(const RationalNumber& rn) {
+
+    return (this->numerator * rn.denominator) < (rn.numerator * this->denominator);
+}
+
+bool RationalNumber::operator>(const RationalNumber& rn) {
+
+    return (this->numerator * rn.denominator) > (rn.numerator * this->denominator);
+}
+
+bool RationalNumber::operator==(const RationalNumber& rn) {
+
+    return (this->numerator * rn.denominator) == (rn.numerator * this->denominator);
 }
 
 //friend functions
