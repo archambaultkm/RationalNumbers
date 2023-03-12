@@ -1,8 +1,9 @@
 //
 // Created by Kaitlyn Archambault on 2023-03-09.
 //
-
 #include "../inc/RationalNumber.h"
+
+//------------------------------------Constructors--------------------------------------------//
 
 //default constructor
 RationalNumber::RationalNumber() {
@@ -36,6 +37,7 @@ RationalNumber::RationalNumber(const string& rationalString) {
 
     cout << "String constructor fired" << endl;
 
+    //if there is a / in the string, the user entered a numerator and denominator
     if (rationalString.find('/') != string::npos) {
 
         vector<int> intVals = stringToRational(rationalString);
@@ -56,7 +58,7 @@ RationalNumber::~RationalNumber() {
     cout << "Destructor fired" << endl;
 }
 
-//member functions
+//------------------------------------Member Functions--------------------------------------------//
 
 //below method adapted from https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
 vector<int> RationalNumber::stringToRational(const string &input) {
@@ -97,7 +99,18 @@ void RationalNumber::reduce(RationalNumber& rn) {
     }
 }
 
-//make and return a new RationalNumber in the operator overloads so you can do arithmetic on the same fractions multiple times
+RationalNumber& RationalNumber::operator=(const RationalNumber& rn) {
+
+    cout << "Custom assignment operator fired" << endl;
+    numerator = rn.numerator;
+    denominator = rn.denominator;
+
+    return *this;
+}
+
+//------------------------------------Math Operators--------------------------------------------//
+
+//make and return a new RationalNumber in the operator overloads so arithmetic on the same fraction objects multiple times is possible
 
 RationalNumber RationalNumber::operator+(const RationalNumber& rn) {
 
@@ -187,31 +200,33 @@ RationalNumber& RationalNumber::operator/=(const RationalNumber& rn) {
     return *this;
 }
 
-RationalNumber& RationalNumber::operator=(const RationalNumber& rn) {
-
-    cout << "custom assignment operator fired" << endl;
-    numerator = rn.numerator;
-    denominator = rn.denominator;
-
-    return *this;
-}
+//------------------------------------Comparison Operators--------------------------------------------//
 
 bool RationalNumber::operator<(const RationalNumber& rn) {
-
     return (this->numerator * rn.denominator) < (rn.numerator * this->denominator);
 }
 
-bool RationalNumber::operator>(const RationalNumber& rn) {
+bool RationalNumber::operator<=(const RationalNumber& rn) {
+    return (this->numerator * rn.denominator) <= (rn.numerator * this->denominator);
+}
 
+bool RationalNumber::operator>(const RationalNumber& rn) {
     return (this->numerator * rn.denominator) > (rn.numerator * this->denominator);
 }
 
-bool RationalNumber::operator==(const RationalNumber& rn) {
+bool RationalNumber::operator>=(const RationalNumber& rn) {
+    return (this->numerator * rn.denominator) >= (rn.numerator * this->denominator);
+}
 
+bool RationalNumber::operator==(const RationalNumber& rn) {
     return (this->numerator * rn.denominator) == (rn.numerator * this->denominator);
 }
 
-//friend functions
+bool RationalNumber::operator!=(const RationalNumber& rn) {
+    return (this->numerator * rn.denominator) != (rn.numerator * this->denominator);
+}
+
+//------------------------------------Friend Functions--------------------------------------------//
 
 ostream& operator<<(ostream &output, const RationalNumber &rn) {
 

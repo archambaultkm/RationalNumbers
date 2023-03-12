@@ -18,14 +18,15 @@ private:
     int denominator;
 
 public:
-    //constructors
+    //-------------------Constructors-------------------//
     RationalNumber();
     explicit RationalNumber(int numerator);
     RationalNumber(int numerator, int denominator);
     explicit RationalNumber(const string& rationalString);
+
     ~RationalNumber();
 
-    //member functions
+    //-------------------Member Functions-------------------//
     vector<int> stringToRational(const string &input);
     int getGCD(int numerator, int denominator);
     void reduce(RationalNumber& rn);
@@ -42,11 +43,13 @@ public:
     RationalNumber& operator/=(const RationalNumber& rn);
 
     bool operator<(const RationalNumber& rn);
+    bool operator<=(const RationalNumber& rn);
     bool operator>(const RationalNumber& rn);
+    bool operator>=(const RationalNumber& rn);
     bool operator==(const RationalNumber& rn);
     bool operator!=(const RationalNumber& rn);
 
-    //friend functions
+    //-------------------Friend Functions-------------------//
     friend ostream& operator<<(ostream &output, const RationalNumber &rn);
 };
 
