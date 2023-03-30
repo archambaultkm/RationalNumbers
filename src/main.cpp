@@ -1,4 +1,4 @@
-#include "../inc/RationalNumber.h"
+#include "RationalNumber.h"
 
 int main() {
 
@@ -17,7 +17,7 @@ int main() {
 
         while (!valid) {
 
-            cout << "Enter your first rational number (format x/x or x, no decimals or letters): " << endl;
+            cout << "Enter your first rational number (format x/x or x, no decimals or letters, no 0 denominator): " << endl;
             cin >> input;
 
             valid = regex_match(input, acceptableInput);
@@ -28,7 +28,7 @@ int main() {
         valid = false;
         while (!valid) {
 
-            cout << "Enter a second rational number (format x/x or x, no decimals or letters): " << endl;
+            cout << "Enter a second rational number (format x/x or x, no decimals or letters, no 0 denominator): " << endl;
             cin >> input;
 
             valid = regex_match(input, acceptableInput);

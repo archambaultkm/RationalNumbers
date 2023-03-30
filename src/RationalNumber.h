@@ -31,10 +31,10 @@ public:
     int getGCD(int numerator, int denominator);
     void reduce(RationalNumber& rn);
 
-    RationalNumber operator+(const RationalNumber& rn);
-    RationalNumber operator-(const RationalNumber& rn);
-    RationalNumber operator*(const RationalNumber& rn);
-    RationalNumber operator/(const RationalNumber& rn);
+    RationalNumber operator+(RationalNumber rn);
+    RationalNumber operator-(RationalNumber rn);
+    RationalNumber operator*(RationalNumber rn);
+    RationalNumber operator/( RationalNumber rn);
 
     RationalNumber& operator=(const RationalNumber& rn);
     RationalNumber& operator+=(const RationalNumber& rn);

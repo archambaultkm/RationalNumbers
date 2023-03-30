@@ -1,7 +1,7 @@
 //
 // Created by Kaitlyn Archambault on 2023-03-09.
 //
-#include "../inc/RationalNumber.h"
+#include "RationalNumber.h"
 
 //------------------------------------Constructors--------------------------------------------//
 
@@ -112,7 +112,9 @@ RationalNumber& RationalNumber::operator=(const RationalNumber& rn) {
 
 //make and return a new RationalNumber in the operator overloads so arithmetic on the same fraction objects multiple times is possible
 
-RationalNumber RationalNumber::operator+(const RationalNumber& rn) {
+RationalNumber RationalNumber::operator+(RationalNumber rn) {
+
+    cout <<"Addition operator fired" << endl;
 
     RationalNumber result;
 
@@ -126,6 +128,8 @@ RationalNumber RationalNumber::operator+(const RationalNumber& rn) {
 
 RationalNumber& RationalNumber::operator+=(const RationalNumber& rn) {
 
+    cout <<"Addition assignment operator fired" << endl;
+
     this->numerator = (this->numerator * rn.denominator) + (rn.numerator * this->denominator);
     this->denominator *= rn.denominator;
 
@@ -134,7 +138,9 @@ RationalNumber& RationalNumber::operator+=(const RationalNumber& rn) {
     return *this;
 }
 
-RationalNumber RationalNumber::operator-(const RationalNumber& rn) {
+RationalNumber RationalNumber::operator-(RationalNumber rn) {
+
+    cout <<"Subtraction operator fired" << endl;
 
     RationalNumber result;
 
@@ -148,6 +154,8 @@ RationalNumber RationalNumber::operator-(const RationalNumber& rn) {
 
 RationalNumber& RationalNumber::operator-=(const RationalNumber& rn) {
 
+    cout <<"Subtraction assignment operator fired" << endl;
+
     this->numerator = (this->numerator * rn.denominator) - (rn.numerator * this->denominator);
     this->denominator *= rn.denominator;
 
@@ -156,7 +164,9 @@ RationalNumber& RationalNumber::operator-=(const RationalNumber& rn) {
     return *this;
 }
 
-RationalNumber RationalNumber::operator*(const RationalNumber& rn) {
+RationalNumber RationalNumber::operator*(RationalNumber rn) {
+
+    cout <<"Multiplication operator fired" << endl;
 
     RationalNumber result;
 
@@ -170,6 +180,8 @@ RationalNumber RationalNumber::operator*(const RationalNumber& rn) {
 
 RationalNumber& RationalNumber::operator*=(const RationalNumber& rn) {
 
+    cout <<"Multiplication assignment operator fired" << endl;
+
     this->numerator *= rn.numerator;
     this->denominator *= rn.denominator;
 
@@ -178,9 +190,20 @@ RationalNumber& RationalNumber::operator*=(const RationalNumber& rn) {
     return *this;
 }
 
-RationalNumber RationalNumber::operator/(const RationalNumber& rn) {
+RationalNumber RationalNumber::operator/(RationalNumber rn) {
+
+    cout <<"Division operator fired" << endl;
 
     RationalNumber result;
+
+    if (rn.numerator == 0) {
+
+        cout<<"Result not a number, defaulting to 0/1"<<endl;
+        result.numerator = 0;
+        result.denominator = 1;
+
+        return result;
+    }
 
     result.numerator = this->numerator * rn.denominator;
     result.denominator = this->denominator * rn.numerator;
@@ -192,37 +215,67 @@ RationalNumber RationalNumber::operator/(const RationalNumber& rn) {
 
 RationalNumber& RationalNumber::operator/=(const RationalNumber& rn) {
 
+    cout <<"Division assignment operator fired" << endl;
+
+    if (rn.numerator == 0) {
+
+        cout<<"Result not a number, defaulting to 0/1"<<endl;
+        this->numerator = 0;
+        this->denominator = 1;
+
+        return *this;
+    }
+
     this->numerator *= rn.denominator;
     this->denominator *= rn.numerator;
 
     reduce(*this);
 
     return *this;
+
 }
 
 //------------------------------------Comparison Operators--------------------------------------------//
 
 bool RationalNumber::operator<(const RationalNumber& rn) {
+
+    cout <<"< operator fired" << endl;
+
     return (this->numerator * rn.denominator) < (rn.numerator * this->denominator);
 }
 
 bool RationalNumber::operator<=(const RationalNumber& rn) {
+
+    cout <<"<= operator fired" << endl;
+
     return (this->numerator * rn.denominator) <= (rn.numerator * this->denominator);
 }
 
 bool RationalNumber::operator>(const RationalNumber& rn) {
+
+    cout <<"> operator fired" << endl;
+
     return (this->numerator * rn.denominator) > (rn.numerator * this->denominator);
 }
 
 bool RationalNumber::operator>=(const RationalNumber& rn) {
+
+    cout <<">= operator fired" << endl;
+
     return (this->numerator * rn.denominator) >= (rn.numerator * this->denominator);
 }
 
 bool RationalNumber::operator==(const RationalNumber& rn) {
+
+    cout <<"== operator fired" << endl;
+
     return (this->numerator * rn.denominator) == (rn.numerator * this->denominator);
 }
 
 bool RationalNumber::operator!=(const RationalNumber& rn) {
+
+    cout <<"!= operator fired" << endl;
+
     return (this->numerator * rn.denominator) != (rn.numerator * this->denominator);
 }
 
